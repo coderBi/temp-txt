@@ -1,0 +1,1 @@
+语法： load data infile "完整的数据文件路径" into table 表名
