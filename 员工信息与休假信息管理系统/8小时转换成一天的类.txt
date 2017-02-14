@@ -1,0 +1,23 @@
+class Day{
+private:
+	double hour; //实际小时数
+	double day; //转换后的天数
+public:
+	Day(double hour = 0.0){
+		this->hour = hour;
+		this->day = this->hour / 8; 
+	}
+	Day & operator+(const Day & another){
+		this->hour += another.hour;
+		this->day = this->hour / 8;
+		return *this;
+	}
+	Day & operator-(const Day & another){
+		this->hour -= another.hour;
+		this->day = this->hour / 8;
+		return *this;
+	}
+	double getDay(){
+		return day;
+	}
+};
