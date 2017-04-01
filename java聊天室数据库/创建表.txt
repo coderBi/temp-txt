@@ -1,0 +1,15 @@
+//创建数据库
+create database java_chartroom;
+
+use java_chartroom;
+
+//创建用户表
+create table user(id int primary key  auto_increment,
+			username varchar(20),
+			password varchar(20),
+			type varchar(20) comment '用户的身份');
+//添加用户数据
+insert into user values(null,'aaa','aaa','admin');
+insert into user values(null,'bbb','bbb','user');
+insert into user values(null,'ccc','ccc','admin');
+insert into user values(null,'ddd','ddd','user');
