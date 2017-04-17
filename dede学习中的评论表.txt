@@ -1,0 +1,23 @@
+#创建数据库表的三个优化方式：
+	#1，创建索引
+	#2，尽可能在所有的字段上限制not null
+	#2，用尽可能满足要求的字段类型，例如有的表中可以不用int(int一般是32位)可以仅仅用mediumint(一般24位)
+
+create table dede_comment
+(
+	id mediumint unsigned not null auto_increment,
+	title varchar(30) not null comment '评论的标题',
+	content varchar(200) not null,
+	user_id int unsigned not null comment '用户id',
+	movie_id int unsigned not null comment '电影id',
+	star tinyint unsigned not null comment '评分',
+	addtime datetime not null,
+	parent_id mediumint unsigned not null default '0' comment '0:对电影的评论, 不等于0表示对评论的回复',
+	primary key(id),
+	key(parent_id),
+	key(movie_id),
+	key(user_id)
+) engine=myisam default charset=utf8 comment '评论与回复表';
+
+#取出某个电影的所有的评论和评论的回复数
+select a.*,count(b.id) from dede_comment a left join dede_comment b on a.id=b.parent_id where a.parent_id=0  and a.movie_id=1 group by a.id

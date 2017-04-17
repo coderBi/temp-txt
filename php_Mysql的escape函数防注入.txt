@@ -1,0 +1,8 @@
+---mysql扩展里面有一个 mysql_real_escape_string
+	public function escapeString($str=''){
+		return "'".mysql_real_escape_string($str,$this->link)."'";
+	}
+---pdo中存在函数 quote()
+	public function escapeString($str='') {
+		return $this->_pdo->quote($str);
+	}

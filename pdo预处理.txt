@@ -1,0 +1,78 @@
+<?php
+$stmt = $dbh->prepare("INSERT INTO REGISTRY (name, value) VALUES (:name, :value)");
+$stmt->bindParam(':name', $name);
+$stmt->bindParam(':value', $value);
+
+// 插入一行
+$name = 'one';
+$value = 1;
+$stmt->execute();
+
+//  用不同的值插入另一行
+$name = 'two';
+$value = 2;
+$stmt->execute();
+?>
+
+<?php
+$stmt = $dbh->prepare("INSERT INTO REGISTRY (name, value) VALUES (?, ?)");
+$stmt->bindParam(1, $name);
+$stmt->bindParam(2, $value);
+
+// 插入一行
+$name = 'one';
+$value = 1;
+$stmt->execute();
+
+// 用不同的值插入另一行
+$name = 'two';
+$value = 2;
+$stmt->execute();
+?>
+
+
+///////////////////////////////$stmt->excute(array(参数列表)); ///////////////
+<?php
+$stmt = $dbh->prepare("SELECT * FROM REGISTRY where name = ?");
+if ($stmt->execute(array($_GET['name']))) {
+  while ($row = $stmt->fetch()) {
+    print_r($row);
+  }
+}
+?>
+
+
+//////////////////////////////////////获取返回////////////////
+<?php
+$stmt = $dbh->prepare("CALL sp_returns_string(?)");
+$stmt->bindParam(1, $return_value, PDO::PARAM_STR, 4000); 
+
+// 调用存储过程
+$stmt->execute();
+
+print "procedure returned $return_value\n";
+?>
+
+////////////////////////////////////////既当输入又做输出///////////////////////////////
+<?php
+$stmt = $dbh->prepare("CALL sp_takes_string_returns_string(?)");
+$value = 'hello';
+$stmt->bindParam(1, $value, PDO::PARAM_STR|PDO::PARAM_INPUT_OUTPUT, 4000); 
+
+// 调用存储过程
+$stmt->execute();
+
+print "procedure returned $value\n";
+?>
+
+
+///////////////////////////note: bind函数会在字符串左右加上 '' 所以下面的使用不正确////////////////
+<?php
+$stmt = $dbh->prepare("SELECT * FROM REGISTRY where name LIKE '%?%'");
+////////////////////like后面的'%?%'最后又多出来一对 ''/////////////////////////////////
+$stmt->execute(array($_GET['name']));
+
+// 占位符必须被用在整个值的位置
+$stmt = $dbh->prepare("SELECT * FROM REGISTRY where name LIKE ?");
+$stmt->execute(array("%$_GET[name]%"));
+?>
