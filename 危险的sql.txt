@@ -1,0 +1,16 @@
+1,post get传递的数据中可能存在html或者js这样的代码，如果直接插入数据库，可能会引起网页的异常
+-----处理方案：这个攻击称为XSS(跨站脚本攻击)，一般在插入数据库之前可以使用dede的RemoveXSS或者使用php的
+2，插入的字符串中存在敏感字符，例如 ''，这样会改变sql执行的逻辑。
+-----处理方案： 插入数据库之前使用php的 addslahes函数处理变量,php5.4之前一般php.ini中直接配置了自动过滤输入，如果没有开启可以在php脚本执行之前执行下面的额代码
+	function _RunMagicQuotes(&$svar){
+		//如果没有开启自动过滤，就执行变量的内容的替换
+		if(!get_magic_quotes_gpc()){
+			if(is_array())
+				foreach($svar $k=>$v) $svar[$k] = _RunMagicQuotes($v);
+			else{
+				if('string' = typeof($svar))
+					$svar = addslashes($svar);
+			}
+		}
+	}
+-----note：php5.4之后不再支持 magic_quotes_gpc=on 这样的配置项，更精细的操作交给用户处理。

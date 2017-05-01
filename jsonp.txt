@@ -1,0 +1,11 @@
+jsonp： ajax请求不能跨源，所以有的时候使用<script src="另一个网站的php文件.php"></script>。请求到的php中的echo 语句打印到了<script></script>中间。 然后根据约定，在php中echo的是这样一个模式的字符串:
+	echo "xxxfunction('$data');";
+-----其中 $data 是页面php页面生成的json字符串，xxxfunction是调用页面需要定义的js函数。这样在调用的html中写一个函数就可以得到json然后进行使用了。
+	xxxfunction($data){ 
+		//取出json对象
+		eval("var json = $data;");	
+	}
+
+
+-----note: 所以目前第三方网站提供一个jsonp接口，自己只要定义指定格式的js函数就可以进行第三方内容的引入了。
+------note：自己的网站上进行file_get_contents 进行其他页面的转发，不好组织第三方的cookie之类的信息，所以不适合有用户系统(微博、qq...)的第三方内容获取。相比较jsonp因为是浏览器请求一个script，所以会带有cookie等信息，更实用一些。

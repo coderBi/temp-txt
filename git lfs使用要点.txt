@@ -1,0 +1,14 @@
+1，使用流程：
+	①：安装lfs
+	②：git init
+	③：git lfs install
+	④：git lfs track "*.rar"
+	⑤：git add --all
+	⑥：git commit --all
+	7： git lfs ls-files
+	⑧：git push --all
+
+2，使用注意点：
+	git add 一定要在 git lfs install 和 git track之后， 否则执行 git lfs ls-files会发现没有文件匹配到。原理分析也很简单:
+		--------如果之前已经add了，那么可能已经通过其他的方式push了，那么应该是匹配不到才正常。
+		------之前的文件add的时候没有track，所以配置为非lfs的上传了，也就是说这个文件到了非lfs列表。

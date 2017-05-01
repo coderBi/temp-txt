@@ -1,0 +1,16 @@
+创建：
+# service snmpd stop
+# net-snmp-config --create-snmpv3-user -ro -a ttlsapwd  -x DES -X ttlsades ttlsa
+----ttlsa：用户名
+----ttlsapwd：密码，密码必须大于8个字符
+----DES:加密方式，这边支持AES、DES两种
+----ttlsades：DES口令，必须大于8位
+
+noAuthNoPriv登录：	
+# snmpwalk  -v 3 -l authPriv  173.219.255.122
+
+authNoPriv登录：
+# snmpwalk -v 3 -u ttlsa -a MD5 -A ttlsapwd -l authNoPriv testphp.com sysName
+
+authPriv登录：
+# snmpwalk  -v 3 -u ttlsa -a MD5 -A ttlsapwd -x DES -X ttlsades -l authPriv  173.219.255.122  sysName
