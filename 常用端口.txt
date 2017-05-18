@@ -1,0 +1,2 @@
+ftp,dns,http,pop3,smtp,telnet
+21、53、80、 110、 25、 23
