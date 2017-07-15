@@ -1,0 +1,32 @@
+1，ssh的使用是为了不在每一次push的时候再输入用户名密码进行验证。如果不用ssh还可以通过在remote中加上用户名密码：
+ git remote add origin https://coderbi:pass@github.com/username/xxx.git 
+不过这种写法会将用户名密码直接写到.git下面的文本里面，这样不是很安全。
+2，ssh是针对走ssh协议才有效果的，如果 git remote set-url https://github.com/username/xxx.git 这种形式因为是https的，
+所以不会解析ssh。
+3，对于Linux，每一个用户的 .ssh 目录存放的位置是宿主目录下的.ssh也就是 ~/.ssh。使用ssh协议进行git传出的时候，每次连接
+会使用这个目录下的私钥文件id_rsa进行加密。要想成功push在git服务器上需要添加相应的公钥，方法是找到 settings/ssh 然后添加
+一个公钥，将~/.ssh 下面的公钥文件id_rsa.pub的内容拷贝到添加的公钥内容区。这在Linux下面，由于vim中拷贝容易多出来空格，所以
+可以使用 cat ~/.ssh/id_rsa.pub然后在终端中直接拷贝。注意，不同的Linux用户由于读取的是不同位置的私钥所以要分别添加不同的
+公钥到github服务器。
+4，对于window，.ssh目录存在目录为c:/users/Administrator下。如果使用一次git desktop，它会自动的在.ssh下面生成一对公私钥，名称是
+github_rsa和github_rsa.pub这一对的使用优先级是比名称为id_rsa更高的，因为通过测试如果同时自己又创建了id_rsa并且添加到github服务器，
+使用终端用ssh传输的时候使用的是github_rsa（也就是如果git desktop帮忙创建了一般没有必要再创建一个，即使创建了也是没用的）。git 
+desktop 创建好了这一对公私钥之后，第一次传输的时候会自动将公钥添加到github服务器上面。
+5，git desktop虽然会自动创建公私钥，但是通过查看git shell可以发现通过git desktop传输，默认配置的元素url形式是  https://github.com/xx/xx.git
+也就是说，git desktop会帮忙创建公私钥，但是它默认是使用https传输的。至于https传输，却又没有在url中指出用户名密码，这个验证的细节目前
+不是很清楚。
+6，终端创建公私钥命令: 在window下面使用git shell 在Linux下面直接使用终端
+	ssh-keygen -t rsa -b 4096 -C "770168408@qq.com"
+   创建的过程中，会提示公私钥保存的位置，一般直接enter。还会输入两次要使用这一对密钥的密码，这一对密码在第一次连接公钥的时候会要求进行输入。
+   注意，这里的密码不是github的登录密码，是设置一个新的使用密钥的密码。
+7，添加了公私钥配置之后，一般需要配置使用的用户民和邮件地址，一般可以做全局的git配置
+	git config --global user.name "coderbi"
+	git config --global user.email "770168408@qq.com"
+   然后进一步设置一个仓库的远程url，形式如下:
+	git remote add origin git@github.com:coderbi/xx.git
+   最后使用push:
+	git push origin master
+   可能会提示要输入秘钥密码，这个密码是创建密钥的时候设置的。
+8，最后，有一个命令可以单独测试公私钥是否可以正常使用：
+	ssh -T git@github.com
+   如果可以使用，会返回成功连接信息.

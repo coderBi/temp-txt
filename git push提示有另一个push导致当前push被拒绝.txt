@@ -1,0 +1,3 @@
+error: failed to push some refs to 'git@github.com:....." Updates were rejected because the remote contains work that you do not have locally. This is usually caused by another repository pushing to。
+
+这个git报错，指的是由于有另一个push操作，导致当前的这个push被拒绝，所以需要先pull再push。
