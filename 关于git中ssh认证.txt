@@ -1,4 +1,4 @@
-1，ssh的使用是为了不在每一次push的时候再输入用户名密码进行验证。如果不用ssh还可以通过在remote中加上用户名密码：
+﻿1，ssh的使用是为了不在每一次push的时候再输入用户名密码进行验证。如果不用ssh还可以通过在remote中加上用户名密码：
  git remote add origin https://coderbi:pass@github.com/username/xxx.git 
 不过这种写法会将用户名密码直接写到.git下面的文本里面，这样不是很安全。
 2，ssh是针对走ssh协议才有效果的，如果 git remote set-url https://github.com/username/xxx.git 这种形式因为是https的，
@@ -30,3 +30,5 @@ desktop 创建好了这一对公私钥之后，第一次传输的时候会自动
 8，最后，有一个命令可以单独测试公私钥是否可以正常使用：
 	ssh -T git@github.com
    如果可以使用，会返回成功连接信息.
+
+-----note：实际使用过程中，可能出现使用windows自带的cmd提示public key不能通过认证，这个时候通过 ssh -T git@github.com 如果测试也是不能连接，可以使用git shell解决这个问题(也就是说git shell在寻找和使用哪一个key上有自己的细节).
