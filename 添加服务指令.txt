@@ -1,4 +1,4 @@
 指令:
-sc create 服务名称 binPath= "exe路径 附加参数 --service"  start= auto
-例如：
+sc create 服务名称 binPath= "exe路径 附加参数"  start= auto
+例如：特别要注意的是 = 与后面的值中间要有一个空
 sc create svnd binPath= "C:\Program Files\VisualSVN Server\bin\svnserve.exe -r D:\资料与记录（新装硬盘）\svnRoot --service" start= auto

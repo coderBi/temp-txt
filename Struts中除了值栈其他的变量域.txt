@@ -1,0 +1,9 @@
+1,Struts 除了值栈中的对象，其他没有保存在值栈中间的对象有
+a）parameters，例如#parameters["id"]或者#parameters.id相当与调用了HttpServletRequest对象的getParameter的方法
+b）request， 当与调用了HttpServletRequest对象的getAttrubute的方法
+c）session， 相当于调用了HttpSession对象的getAttribute方法
+d）application， 相当于ServletContext的getAttribute方法
+e）attr，如果PageContext可用就访问PageContext，否则依次搜索request、session、application
+*******note: parameters本质上是一个使用HttpServletRequest对象中的请求参数构造的map对象，一旦这个对象被创建（在调用Action实例化之前就已经创建好），它和HttpServletRequest对象就没有任何的关系了。
+
+
